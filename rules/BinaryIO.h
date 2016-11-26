@@ -21,3 +21,9 @@
 
 #define $this->getByte() (ord($this->get(1)))
 #define $this->putByte(data) ($this->buffer .= chr(data))
+
+#define $this->getVarInt() (Binary::readVarInt($this))
+#define $this->putVarInt(data) ($this->buffer .= Binary::writeVarInt(data))
+
+#define $this->getUnsignedVarInt() (Binary::readUnsignedVarInt($this))
+#define $this->putUnsignedVarInt(data) ($this->buffer .= Binary::writeUnsignedVarInt(data))

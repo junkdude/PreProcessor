@@ -5,17 +5,20 @@
 #define Binary::readInt(data) (unpack("N", data)[1] << 32 >> 32)
 #define Binary::readLInt(data) (unpack("V", data)[1] << 32 >> 32)
 #define Binary::writeLong(data) (pack("NN", data >> 32, data & 0xFFFFFFFF))
+#define Binary::writeVarInt(data) (Binary::writeUnsignedVarInt((data << 1) ^ (data >> 63)))
 #else
 #ifdef COMPILE_32
 #define Binary::readSignedShort(data) (unpack("n", data)[1] << 16 >> 16)
 #define Binary::readSignedLShort(data) (unpack("v", data)[1] << 16 >> 16)
 #define Binary::readInt(data) (unpack("N", data)[1])
 #define Binary::readLInt(data) (unpack("V", data)[1])
+#define Binary::writeVarInt(data) (Binary::writeUnsignedVarInt((data << 1) ^ (data >> 31)))
 #else
 #define Binary::readSignedShort(data) (PHP_INT_SIZE === 8 ? unpack("n", data)[1] << 48 >> 48 : unpack("n", data)[1] << 16 >> 16)
 #define Binary::readSignedLShort(data) (PHP_INT_SIZE === 8 ? unpack("v", data)[1] << 48 >> 48 : unpack("v", data)[1] << 16 >> 16)
 #define Binary::readInt(data) (PHP_INT_SIZE === 8 ? unpack("N", data)[1] << 32 >> 32 : unpack("N", data)[1])
 #define Binary::readLInt(data) (PHP_INT_SIZE === 8 ? unpack("V", data)[1] << 32 >> 32 : unpack("V", data)[1])
+#define Binary::writeVarInt(data) (Binary::writeUnsignedVarInt((data << 1) ^ (data >> (PHP_INT_SIZE === 8 ? 63 : 31))))
 #endif
 #endif
 
